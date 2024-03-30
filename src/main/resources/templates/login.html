@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
+  <head>
+    <style>
+      #box {
+        width: 500px;
+        min-width: 500px;
+        align-items: center;
+      }
+
+      .container {
+        flex-direction: column;
+      }
+
+      .input-field {
+        margin-top: 10px;
+        margin-bottom: 0;
+      }
+    </style>
+    <script th:if="${result eq 'err_wrong_info'}">
+      alert("등록되지 않았거나 잘못된 비밀번호입니다.")
+    </script>
+  </head>
+
+  <main layout:fragment="content">
+    <form id="box" action="/login" method="post">
+      <h3>로그인</h3>
+      <div class="container">
+        <div class="input-field col s12">
+          <input id="chesscomId" name="chesscomId" type="text" class="validate" />
+          <label for="chesscomId">체스닷컴 ID</label>
+        </div>
+        <div class="input-field col s12">
+          <input id="password" name="password" type="password" class="validate" />
+          <label for="password">비밀번호</label>
+        </div>
+        <p class="red-text" style="font-weight: 500"></p>
+      </div>
+      <div>
+        <button class="btn light-green" style="font-size: 1rem; font-weight: 500">로그인</button>
+        <a href="/" class="btn red" style="font-size: 1rem; font-weight: 500">뒤로가기</a>
+      </div>
+    </form>
+  </main>
+</html>

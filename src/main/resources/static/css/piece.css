@@ -1,0 +1,49 @@
+.wp {
+  background-image: url(/images/pieces/wp.png);
+}
+.bp {
+  background-image: url(/images/pieces/bp.png);
+}
+.wn {
+  background-image: url(/images/pieces/wn.png);
+}
+.bn {
+  background-image: url(/images/pieces/bn.png);
+}
+.wb {
+  background-image: url(/images/pieces/wb.png);
+}
+.bb {
+  background-image: url(/images/pieces/bb.png);
+}
+.wr {
+  background-image: url(/images/pieces/wr.png);
+}
+.br {
+  background-image: url(/images/pieces/br.png);
+}
+.wq {
+  background-image: url(/images/pieces/wq.png);
+}
+.bq {
+  background-image: url(/images/pieces/bq.png);
+}
+.wk {
+  background-image: url(/images/pieces/wk.png);
+}
+.bk {
+  background-image: url(/images/pieces/bk.png);
+}
+.piece {
+  cursor: grab;
+  width: 72px;
+  height: 72px;
+  background-size: 100%;
+}
+
+.promotionPiece {
+  width: 72px;
+  height: 72px;
+  cursor: pointer;
+  background-size: 100%;
+}

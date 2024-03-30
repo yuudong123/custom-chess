@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>재밌는체스</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" />
+    <style>
+      * {
+        font-family: "Noto Sans KR", sans-serif !important;
+      }
+
+      body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      main {
+        flex: 1 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #eef1ff;
+      }
+
+      #box {
+        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        min-height: 200px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        border: solid #ddd 1px;
+        width: 600px;
+        background: #fff;
+        border-radius: 25px;
+        box-shadow: 0 0 10px 2px #bbf;
+      }
+
+      @media screen and (max-width: 500px) {
+        #box {
+          width: 100%;
+        }
+      }
+
+      h3 {
+        margin-top: 0;
+        text-align: center;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+      }
+
+      footer {
+        padding: 0 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="nav-wrapper light-blue">
+          <ul class="center">
+            <li>
+              <a href="/"><b style="font-size: 20px">체갤무급노예 사이트</b></a>
+            </li>
+          </ul>
+          <ul th:if="${memberinfo == null}" class="right hide-on-med-and-down">
+            <li><a href="/join">선수 등록</a></li>
+            <li><a href="/login">로그인</a></li>
+          </ul>
+          <ul th:if="${memberinfo != null}" class="right hide-on-med-and-down">
+            <li><a href="/edit">내 정보</a></li>
+            <li><a href="/logout">로그아웃</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <th:block layout:fragment="content"></th:block>
+    <footer class="page-footer light-blue">
+      <div class="footer-copyright" style="justify-content: center">© 2024 체갤무급노예</div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <th:block layout:fragment="script"></th:block>
+  </body>
+</html>

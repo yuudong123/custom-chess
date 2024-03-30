@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
+  <head>
+    <style>
+      #box {
+        width: 500px;
+        align-items: center;
+      }
+
+      .container {
+        flex-direction: column;
+      }
+
+      .input-field {
+        margin-top: 10px;
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+
+  <main layout:fragment="content">
+    <form id="box" action="/edit/save" method="post">
+      <h3>내 정보</h3>
+      <div class="container">
+        <label for="newChesscomId">체스닷컴 ID</label>
+        <input id="newChesscomId" name="newChesscomId" type="text" class="validate" th:value="${memberinfo.chesscomId}" />
+        <label>네이버 ID</label>
+        <input class="validate" disabled th:value="${memberinfo.naverId}" />
+        <div class="input-field s12">
+          <input id="password" name="password" type="password" class="validate" />
+          <label for="password">비밀번호</label>
+        </div>
+        <a onclick="bye()" class="btn red" style="font-size: 1rem; font-weight: 500; margin-top: 20px">등록 해제</a>
+      </div>
+      <div style="margin-top: 20px">
+        <button class="btn light-green" style="font-size: 1rem; font-weight: 500">저장하기</button>
+        <a href="/" class="btn red" style="font-size: 1rem; font-weight: 500">취소</a>
+      </div>
+    </form>
+    <form id="bye" action="/bye" method="post" hidden></form>
+  </main>
+
+  <script layout:fragment="script">
+    function bye() {
+      if (confirm("해제시 다시 등록해야합니다. 정말 하시겠습니까?")) {
+        document.querySelector("#bye").submit();
+      }
+    }
+  </script>
+</html>

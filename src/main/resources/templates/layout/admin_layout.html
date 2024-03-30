@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>재밌는체스관리자</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css" />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" />
+    <style>
+      * {
+        font-family: "Noto Sans KR", sans-serif;
+      }
+
+      body {
+        display: flex;
+        min-height: 100vh;
+        flex-direction: column;
+      }
+
+      main {
+        flex: 1 0 auto;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #eef1ff;
+      }
+
+      #box {
+        flex-direction: column;
+        display: flex;
+        justify-content: center;
+        min-height: 200px;
+        padding-top: 30px;
+        padding-bottom: 30px;
+        padding-inline: 30px;
+        border: solid #ddd 1px;
+        min-width: 600px;
+        background: #fff;
+        border-radius: 25px;
+        box-shadow: 0 0 10px 2px #bbf;
+      }
+
+      h3 {
+        margin-top: 0;
+        text-align: center;
+      }
+
+      h4 {
+        margin-top: 0;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+      }
+
+      footer {
+        padding: 0 !important;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <nav>
+        <div class="nav-wrapper green">
+          <ul class="center">
+            <li>
+              <a href="/admin/main"><b style="font-size: 20px">관리자 페이지</b></a>
+            </li>
+          </ul>
+          <ul class="right">
+            <li><a href="/admin/members">선수 등록 관리</a></li>
+          </ul>
+        </div>
+      </nav>
+    </header>
+    <th:block layout:fragment="content"></th:block>
+    <footer class="page-footer light-blue">
+      <div class="footer-copyright" style="justify-content: center">© 2014 ssgssg2</div>
+    </footer>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+    <th:block layout:fragment="script"></th:block>
+  </body>
+</html>

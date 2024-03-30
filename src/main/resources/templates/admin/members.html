@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/admin_layout}">
+  <head>
+    <style>
+      table {
+        border-collapse: collapse;
+        border: 1px solid #eee;
+      }
+
+      #box {
+        min-width: 700px;
+      }
+
+      td a {
+        padding-inline: 10px;
+      }
+      th {
+        margin-inline: 100px;
+      }
+      tr td:nth-child(odd) {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+      tr th:nth-child(odd) {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+      .btn-flat {
+        height: 20px;
+        line-height: 20px;
+      }
+    </style>
+  </head>
+
+  <main layout:fragment="content">
+    <div id="box">
+      <h4>등록한 사람들</h4>
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>체스닷컴 ID</th>
+            <th>네이버 ID</th>
+            <th>등록일</th>
+            <th>작업</th>
+          </tr>
+        </thead>
+        <tbody th:each="member : ${list}">
+          <tr>
+            <td th:text="${member.chesscomId}"></td>
+            <td th:text="${member.naverId}"></td>
+            <td th:text="${#dates.format(member.joinAt, 'yyyy년 M월 d일 H시 mm분 ss초')}"></td>
+            <td th:if="${!member.isBanned}"><a class="btn-flat btn-ban red-text lighten-1" th:data-naverId="${member.naverId}">차단</a></td>
+            <td th:if="${member.isBanned}"><a class="btn-flat btn-ban green-text lighten-1" th:data-naverId="${member.naverId}">해제</a></td>
+            <td><a class="btn-flat btn-delete red-text lighten-1" th:data-naverId="${member.naverId}">삭제</a></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script layout:fragment="script" th:inline="javascript">
+    var btnBans = document.querySelectorAll(".btn-ban");
+    var btnDeletes = document.querySelectorAll(".btn-delete");
+    btnBans.forEach((btnBan) => {
+      btnBan.addEventListener("click", () => {
+        var naverId = btnBan.dataset.naverid;
+        if (confirm("정말 차단하시겠습니까?")) {
+          fetch("/admin/ban", {
+            method: "POST",
+            body: naverId,
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("밴 요청이 실패했습니다.");
+              }
+              return response.text();
+            })
+            .then((data) => {
+              if (data == "success") {
+                alert("차단되었습니다");
+              } else if (data == "err_duplicated_ip") {
+                alert("이미 차단된 네이버 ID 입니다");
+              } else {
+                throw new Error("예기치 않은 응답입니다.");
+              }
+              location.reload();
+            })
+            .catch((error) => {
+              alert(error.message);
+            });
+        }
+      });
+    });
+    btnDeletes.forEach((btnDelete) => {
+      btnDelete.addEventListener("click", () => {
+        var naverId = btnDelete.dataset.naverid;
+        if (confirm("정말 차단하시겠습니까?")) {
+          fetch("/admin/delete", {
+            method: "POST",
+            body: naverId,
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error("삭제 요청이 실패했습니다.");
+              }
+              return response.text();
+            })
+            .then((data) => {
+              if (data == "success") {
+                alert("삭제되었습니다");
+              } else {
+                throw new Error("예기치 않은 응답입니다.");
+              }
+              location.reload();
+            })
+            .catch((error) => {
+              alert(error.message);
+            });
+        }
+      });
+    });
+  </script>
+</html>

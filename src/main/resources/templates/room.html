@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>재밌는체스</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700&display=swap" />
+    <link rel="stylesheet" href="/css/piece.css" />
+    <link rel="stylesheet" href="/css/ui.css" />
+  </head>
+  <body>
+    <input type="hidden" id="pr" value="--" data-ff="--" data-tf="--" data-fr="--" data-tr="--" data-capture="--" data-piece="--" />
+    <audio id="soundMove" style="display: none" src="/sounds/move.mp3"></audio>
+    <audio id="soundCastle" style="display: none" src="/sounds/castle.mp3"></audio>
+    <audio id="soundCapture" style="display: none" src="/sounds/capture.mp3"></audio>
+    <audio id="soundPromote" style="display: none" src="/sounds/promote.mp3"></audio>
+    <main>
+      <div th:if="${memberinfo.role == 'admin'}" style="position: absolute; top: 0; left: 0">
+        <input id="inputTime" type="number" value="180" /><input id="inputAdd" type="number" value="3" /><button id="btnReset">reset</button>
+        <br />
+        <span>White : </span><input id="inputWhite" type="text" value="white" /><br />
+        <span>Black : </span><input id="inputBlack" type="text" value="black" />
+      </div>
+      <div id="layoutBoard">
+        <div id="promotionCancel"></div>
+        <div id="gameEnd"></div>
+        <div id="board" th:data-color="${memberinfo.role == 'black' ? 'black' : memberinfo.role == 'white' ? 'white' : 'admin' }" th:data-you="${memberinfo.chesscomId}">
+          <div class="square" data-rank="1" data-file="1"></div>
+          <div class="square" data-rank="1" data-file="2"></div>
+          <div class="square" data-rank="1" data-file="3"></div>
+          <div class="square" data-rank="1" data-file="4"></div>
+          <div class="square" data-rank="1" data-file="5"></div>
+          <div class="square" data-rank="1" data-file="6"></div>
+          <div class="square" data-rank="1" data-file="7"></div>
+          <div class="square" data-rank="1" data-file="8"></div>
+          <div class="square" data-rank="1" data-file="9"></div>
+          <div class="square" data-rank="1" data-file="10"></div>
+          <div class="square" data-rank="2" data-file="1"></div>
+          <div class="square" data-rank="2" data-file="2"></div>
+          <div class="square" data-rank="2" data-file="3"></div>
+          <div class="square" data-rank="2" data-file="4"></div>
+          <div class="square" data-rank="2" data-file="5"></div>
+          <div class="square" data-rank="2" data-file="6"></div>
+          <div class="square" data-rank="2" data-file="7"></div>
+          <div class="square" data-rank="2" data-file="8"></div>
+          <div class="square" data-rank="2" data-file="9"></div>
+          <div class="square" data-rank="2" data-file="10"></div>
+          <div class="square" data-rank="3" data-file="1"></div>
+          <div class="square" data-rank="3" data-file="2"></div>
+          <div class="square" data-rank="3" data-file="3"></div>
+          <div class="square" data-rank="3" data-file="4"></div>
+          <div class="square" data-rank="3" data-file="5"></div>
+          <div class="square" data-rank="3" data-file="6"></div>
+          <div class="square" data-rank="3" data-file="7"></div>
+          <div class="square" data-rank="3" data-file="8"></div>
+          <div class="square" data-rank="3" data-file="9"></div>
+          <div class="square" data-rank="3" data-file="10"></div>
+          <div class="square" data-rank="4" data-file="1"></div>
+          <div class="square" data-rank="4" data-file="2"></div>
+          <div class="square" data-rank="4" data-file="3"></div>
+          <div class="square" data-rank="4" data-file="4"></div>
+          <div class="square" data-rank="4" data-file="5"></div>
+          <div class="square" data-rank="4" data-file="6"></div>
+          <div class="square" data-rank="4" data-file="7"></div>
+          <div class="square" data-rank="4" data-file="8"></div>
+          <div class="square" data-rank="4" data-file="9"></div>
+          <div class="square" data-rank="4" data-file="10"></div>
+          <div class="square" data-rank="5" data-file="1"></div>
+          <div class="square" data-rank="5" data-file="2"></div>
+          <div class="square" data-rank="5" data-file="3"></div>
+          <div class="square" data-rank="5" data-file="4"></div>
+          <div class="square" data-rank="5" data-file="5"></div>
+          <div class="square" data-rank="5" data-file="6"></div>
+          <div class="square" data-rank="5" data-file="7"></div>
+          <div class="square" data-rank="5" data-file="8"></div>
+          <div class="square" data-rank="5" data-file="9"></div>
+          <div class="square" data-rank="5" data-file="10"></div>
+          <div class="square" data-rank="6" data-file="1"></div>
+          <div class="square" data-rank="6" data-file="2"></div>
+          <div class="square" data-rank="6" data-file="3"></div>
+          <div class="square" data-rank="6" data-file="4"></div>
+          <div class="square" data-rank="6" data-file="5"></div>
+          <div class="square" data-rank="6" data-file="6"></div>
+          <div class="square" data-rank="6" data-file="7"></div>
+          <div class="square" data-rank="6" data-file="8"></div>
+          <div class="square" data-rank="6" data-file="9"></div>
+          <div class="square" data-rank="6" data-file="10"></div>
+          <div class="square" data-rank="7" data-file="1"></div>
+          <div class="square" data-rank="7" data-file="2"></div>
+          <div class="square" data-rank="7" data-file="3"></div>
+          <div class="square" data-rank="7" data-file="4"></div>
+          <div class="square" data-rank="7" data-file="5"></div>
+          <div class="square" data-rank="7" data-file="6"></div>
+          <div class="square" data-rank="7" data-file="7"></div>
+          <div class="square" data-rank="7" data-file="8"></div>
+          <div class="square" data-rank="7" data-file="9"></div>
+          <div class="square" data-rank="7" data-file="10"></div>
+          <div class="square" data-rank="8" data-file="1"></div>
+          <div class="square" data-rank="8" data-file="2"></div>
+          <div class="square" data-rank="8" data-file="3"></div>
+          <div class="square" data-rank="8" data-file="4"></div>
+          <div class="square" data-rank="8" data-file="5"></div>
+          <div class="square" data-rank="8" data-file="6"></div>
+          <div class="square" data-rank="8" data-file="7"></div>
+          <div class="square" data-rank="8" data-file="8"></div>
+          <div class="square" data-rank="8" data-file="9"></div>
+          <div class="square" data-rank="8" data-file="10"></div>
+          <div class="square" data-rank="9" data-file="1"></div>
+          <div class="square" data-rank="9" data-file="2"></div>
+          <div class="square" data-rank="9" data-file="3"></div>
+          <div class="square" data-rank="9" data-file="4"></div>
+          <div class="square" data-rank="9" data-file="5"></div>
+          <div class="square" data-rank="9" data-file="6"></div>
+          <div class="square" data-rank="9" data-file="7"></div>
+          <div class="square" data-rank="9" data-file="8"></div>
+          <div class="square" data-rank="9" data-file="9"></div>
+          <div class="square" data-rank="9" data-file="10"></div>
+          <div class="square" data-rank="10" data-file="1"></div>
+          <div class="square" data-rank="10" data-file="2"></div>
+          <div class="square" data-rank="10" data-file="3"></div>
+          <div class="square" data-rank="10" data-file="4"></div>
+          <div class="square" data-rank="10" data-file="5"></div>
+          <div class="square" data-rank="10" data-file="6"></div>
+          <div class="square" data-rank="10" data-file="7"></div>
+          <div class="square" data-rank="10" data-file="8"></div>
+          <div class="square" data-rank="10" data-file="9"></div>
+          <div class="square" data-rank="10" data-file="10"></div>
+        </div>
+      </div>
+      <div id="layoutSide">
+        <div id="whiteProfile" class="profile">
+          <p id="whitePlayer">White Player</p>
+          <p id="timerWhite" class="timer"></p>
+          <p id="whiteTurn" class="textTurn">&leftarrow; Turn</p>
+        </div>
+        <div id="gibo"></div>
+        <div id="blackProfile" class="profile">
+          <p id="blackPlayer">Black Player</p>
+          <p id="timerBlack" class="timer"></p>
+          <p id="blackTurn" class="textTurn">&leftarrow; Turn</p>
+        </div>
+      </div>
+    </main>
+    <script>
+      const webSocket = new WebSocket("ws://chessgall.ddns.net:2385/chess");
+
+      webSocket.onopen = initialize;
+      webSocket.onmessage = (e) => {
+        var data = JSON.parse(event.data);
+        if (data.type == "board") {
+          for (let i = 0; i < 100; i++) {
+            squares[i].innerHTML = "";
+            if (data.board[2 * i] != "-") {
+              squares[i].innerHTML = `<div class="piece ${data.board[2 * i] + data.board[2 * i + 1]}" data-piece="${data.board[2 * i] + data.board[2 * i + 1]}"></div>`;
+            }
+          }
+          setPieces();
+        } else if (data.type == "time") {
+
+        }
+      };
+    </script>
+    <script>
+      // fetch
+
+      function initialize() {
+
+      }
+      function 
+    </script>
+    <script th:if="${memberinfo.role == 'admin'}">
+      const btnReset = document.querySelector("#btnReset");
+      const inputTime = document.querySelector("#inputTime");
+      const inputAdd = document.querySelector("#inputAdd");
+      const inputWhite = document.querySelector("#inputWhite");
+      const inputBlack = document.querySelector("#inputBlack");
+
+      btnReset.addEventListener("click", () => {
+        var data = new Object();
+        data.type = "reset";
+        data.password = "13131324";
+        data.time = inputTime.value;
+        data.add = inputAdd.value;
+        data.wPlayer = inputWhite.value;
+        data.bPlayer = inputBlack.value;
+        webSocket.send(JSON.stringify(data));
+      });
+    </script>
+  </body>
+</html>

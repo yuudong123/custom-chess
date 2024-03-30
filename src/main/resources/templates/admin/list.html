@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/admin_layout}">
+  <head>
+    <style>
+      table {
+        border-collapse: collapse;
+        border: 1px solid #eee;
+      }
+
+      #box {
+        min-width: 700px;
+      }
+
+      td a {
+        padding-inline: 10px;
+      }
+      th {
+        margin-inline: 100px;
+      }
+      tr td:nth-child(odd) {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+      tr th:nth-child(odd) {
+        background-color: rgba(0, 0, 0, 0.02);
+      }
+    </style>
+  </head>
+
+  <main layout:fragment="content">
+    <div id="box">
+      <h4>신청 목록</h4>
+      <table class="striped">
+        <thead>
+          <tr>
+            <th>체스닷컴 ID</th>
+            <th>치지직 닉네임</th>
+            <th>래피드</th>
+            <th>블리츠</th>
+            <th>불렛</th>
+            <th>최고 레이팅</th>
+            <th>등록일</th>
+            <th>IP</th>
+            <th>작업</th>
+          </tr>
+        </thead>
+        <tbody th:each="apply : ${list}">
+          <tr>
+            <td th:text="${apply.chesscomId}"></td>
+            <td th:text="${apply.chzzkNick}"></td>
+            <td th:text="${apply.rapid}"></td>
+            <td th:text="${apply.blitz}"></td>
+            <td th:text="${apply.bullet}"></td>
+            <td th:text="${apply.highest}"></td>
+            <td th:text="${#dates.format(apply.applyAt, 'yyyy년 M월 d일 H시 mm분 ss초')}"></td>
+            <td>
+              <span class="ip-address" style="cursor: pointer">눌러서 확인하기</span>
+              <span class="hidden-ip" th:text="${apply.ipAddress}" style="display: none"></span>
+            </td>
+            <td>
+              <a class="btn-ban waves-effect waves-red red-text lighten-1" th:data-ip="${apply.ipAddress}">차단</a>
+              <a class="btn-delete waves-effect waves-red red-text lighten-1" th:data-id="${apply.chesscomId}">삭제</a>
+              <a class="btn btn-up waves-effect waves-blue blue lighten-1" th:data-id="${apply.chesscomId}">&uparrow;</a>
+              <a class="btn btn-down waves-effect waves-blue blue lighten-1" th:data-id="${apply.chesscomId}">&downarrow;</a>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </main>
+
+  <script th:inline="javascript" layout:fragment="script">
+    document.addEventListener("DOMContentLoaded", function () {
+      var ipAddressElements = document.querySelectorAll(".ip-address");
+      ipAddressElements.forEach(function (element) {
+        element.addEventListener("click", function () {
+          var hiddenIp = this.nextElementSibling;
+          hiddenIp.style.display = "inline";
+          this.style.display = "none";
+        });
+      });
+    });
+
+    var btnBans = document.querySelectorAll(".btn-ban");
+    btnBans.forEach(function (btnBan) {
+      btnBan.addEventListener("click", function () {
+        var ip = this.dataset.ip;
+        if (confirm("정말 차단하시겠습니까?")) {
+          fetch("/admin/ban", {
+            method: "POST",
+            body: ip,
+          })
+            .then(function (response) {
+              if (!response.ok) {
+                throw new Error("밴 요청이 실패했습니다.");
+              }
+              return response.text();
+            })
+            .then(function (result) {
+              if (result === "success") {
+                alert("차단되었습니다");
+              } else if (result === "err_duplicated_ip") {
+                alert("이미 차단된 ip입니다");
+              } else {
+                throw new Error("예기치 않은 응답입니다.");
+              }
+              location.reload();
+            })
+            .catch(function (error) {
+              alert(error.message);
+            });
+        }
+      });
+    });
+
+    var btnDeletes = document.querySelectorAll(".btn-delete");
+    btnDeletes.forEach(function (btnDelete) {
+      btnDelete.addEventListener("click", function () {
+        var chesscomId = this.dataset.id;
+        updateList("DELETE", chesscomId);
+      });
+    });
+
+    var btnUps = document.querySelectorAll(".btn-up");
+    btnUps.forEach(function (btnUp) {
+      btnUp.addEventListener("click", function () {
+        var chesscomId = this.dataset.id;
+        updateList("UP", chesscomId);
+      });
+    });
+
+    var btnDowns = document.querySelectorAll(".btn-down");
+    btnDowns.forEach(function (btnDown) {
+      btnDown.addEventListener("click", function () {
+        var chesscomId = this.dataset.id;
+        updateList("DOWN", chesscomId);
+      });
+    });
+
+    function updateList(direction, chesscomId) {
+      fetch("/admin/updateApplyList", {
+        method: "POST",
+        body: JSON.stringify({ direction: direction, chesscomId: chesscomId }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+        .then(function (response) {
+          return response.text();
+        })
+        .then(function (result) {
+          if(result=="success"){
+            location.reload();
+          } else {
+            alert("에러가 발생했습니다.")
+          }
+        })
+        .catch(function (error) {});
+    }
+  </script>
+</html>

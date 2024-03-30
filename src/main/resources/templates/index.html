@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
+  <head>
+    <style>
+      a.btn {
+        padding: 20px;
+        margin-inline: 5px;
+        display: flex;
+        align-items: center;
+        font-size: 1.1em;
+        font-weight: 500;
+      }
+      img {
+        width: 35px;
+      }
+      .container {
+        justify-content: center;
+        align-items: center;
+      }
+    </style>
+  </head>
+
+  <main layout:fragment="content">
+    <div id="box">
+      <h3>아무대회</h3>
+      <div class="container">
+        <a th:if="${memberinfo != null && memberinfo.verified}" href="/room" class="btn light-green">방 참가</a>
+        <a th:if="${memberinfo == null}" href="/login" class="btn light-green">로그인</a>
+        <a th:if="${memberinfo != null}" href="/edit" class="btn light-green">내 정보</a>
+      </div>
+    </div>
+  </main>
+
+  <script layout:fragment="script"></script>
+</html>

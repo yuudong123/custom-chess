@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>신청 목록 오버레이</title>
+    <style>
+      body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        line-height: 1;
+        height: 100vh;
+        margin: 0;
+        color: white;
+        font-family: "SB 어그로", sans-serif;
+        font-size: 5vw;
+      }
+      p {
+        margin: 10px;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container" th:each="item : ${list}">
+      <p>
+        <span th:text="${item.chesscomId}"></span>
+        <span class="rating">(<span th:text="${item.highest}" style="color: white"></span>)</span>
+      </p>
+    </div>
+    <script>
+      var arrP = document.querySelectorAll(".rating");
+      arrP.forEach((p) => {
+        var rating = p.querySelector("span").textContent;
+        if (rating < 1300) {
+          p.style.color = "#EDEDED";
+          p.querySelector("span").style.color = "#EDEDED";
+        } else if (1300 <= rating && rating < 1600) {
+          p.style.color = "#FFFF00";
+          p.querySelector("span").style.color = "#FFFF00";
+        } else if (1600 <= rating && rating < 1900) {
+          p.style.color = "#3d81f3";
+          p.querySelector("span").style.color = "#3d81f3";
+        } else if (1900 <= rating) {
+          p.style.color = "#FF0000";
+          p.querySelector("span").style.color = "#FF0000";
+        }
+      });
+
+      function refreshPage() {
+        location.reload();
+      }
+      setTimeout(refreshPage, 3000);
+    </script>
+  </body>
+</html>

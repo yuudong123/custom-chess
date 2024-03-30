@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>신청 알림 오버레이</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        height: 100vh;
+        margin: 0;
+      }
+
+      #notification {
+        text-align: center;
+        margin-bottom: 20px;
+        font-size: 3em; /* 기본 글자 크기를 3배로 설정 */
+        color: white; /* 글자색을 흰색으로 설정 */
+        font-family: "SB 어그로", sans-serif;
+        line-height: 1; /* 세로 간격을 줄임 */
+      }
+
+      audio {
+        margin-bottom: 20px;
+        display: none; /* 페이지 로드 후 자동 재생을 위해 초기에는 숨김 */
+      }
+
+      .icon {
+        width: 30px;
+        height: auto;
+        vertical-align: middle;
+      }
+    </style>
+  </head>
+  <body>
+    <audio id="notification-sound" controls>
+      <source src="/sounds/test.wav" type="audio/wav" />
+    </audio>
+
+    <div id="notification" th:if="${data ne null}">
+      <span style="font-size: 45px" th:text="${data.chesscomId}"></span>
+      <br />
+      <img src="/images/rapid.png" alt="rapid" class="icon" /> <span style="font-size: 35px" th:text="${data.rapid}"></span> <img src="/images/blitz.png" alt="blitz" class="icon" /> <span style="font-size: 35px" th:text="${data.blitz}"></span> <img src="/images/bullet.png" alt="bullet" class="icon" /> <span style="font-size: 35px" th:text="${data.bullet}"></span>
+    </div>
+
+    <script>
+      var audio = document.getElementById("notification-sound");
+      var notification = document.getElementById("notification");
+      audio.volume = 0.5;
+
+      if (notification != null) {
+        audio.play();
+      }
+
+      // 5초마다 페이지 새로고침
+      //setInterval(() => {
+      //  location.reload();
+      //}, 5000);
+    </script>
+  </body>
+</html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layout/default_layout}">
+  <head>
+    <style>
+      #box {
+        width: 500px;
+        align-items: center;
+      }
+
+      .container {
+        flex-direction: column;
+      }
+
+      .input-field {
+        margin-top: 10px;
+        margin-bottom: 0;
+      }
+    </style>
+  </head>
+
+  <main layout:fragment="content">
+    <form id="box" action="/join" method="post">
+      <h3>선수 등록</h3>
+      <div class="container">
+        <div class="input-field s12">
+          <input id="chesscomId" name="chesscomId" type="text" class="validate" />
+          <label for="chesscomId">체스닷컴 ID</label>
+        </div>
+        <div class="input-field s12">
+          <input id="naverId" name="naverId" type="text" class="validate" />
+          <label for="naverId">네이버 ID</label>
+        </div>
+        <a onclick="verify()" class="btn light-green" style="font-size: 1rem; font-weight: 500">인증번호 보내기</a>
+        <div class="input-field s12">
+          <input id="emailcode" name="emailcode" type="text" class="validate" />
+          <label for="emailcode">이메일 인증번호</label>
+        </div>
+        <div class="input-field s12">
+          <input id="password" name="password" type="password" class="validate" />
+          <label for="password">비밀번호</label>
+        </div>
+        <p class="red-text" style="font-weight: 500">암호화는 하지만 다른 데서 사용하는 비밀번호 ㄴㄴ</p>
+      </div>
+      <div>
+        <button class="btn light-green" style="font-size: 1rem; font-weight: 500">등록하기</button>
+        <a href="/index" class="btn red" style="font-size: 1rem; font-weight: 500">취소</a>
+      </div>
+    </form>
+  </main>
+
+  <script layout:fragment="script">
+    function verify() {
+      var naverId = document.getElementById("naverId").value;
+
+      fetch("/emailcheck?naverId=" + naverId, {
+        method: "POST",
+        body: naverId,
+      })
+        .then((response) => {
+          if (response.ok) {
+            return response.text();
+          } else {
+            throw new Error("요청이 실패했습니다.");
+          }
+        })
+        .then((data) => {
+          if (data === "invalid-id") {
+            alert("유효하지 않은 ID입니다.");
+          } else if (data === "success") {
+            alert("네이버 이메일을 확인하세요.");
+          }
+        })
+        .catch((error) => console.error("Error:", error));
+    }
+  </script>
+</html>
